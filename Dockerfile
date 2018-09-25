@@ -17,7 +17,16 @@ RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
 RUN tar xvzf release-1.8.0.tar.gz
 RUN cd googletest-release-1.8.0/googletest; cmake . ; make; mv libg* /usr/local/lib/ ; mv include/* /usr/local/include/
 
+RUN apt-get update
+RUN apt-get install sudo
+
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 RUN apt-get clean  \
     && rm -rf /var/lib/apt/lists/*
+
+USER docker
 
 CMD ["cmake"]
